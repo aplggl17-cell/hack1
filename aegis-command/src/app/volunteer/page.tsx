@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Mic, MicOff, AlertTriangle } from 'lucide-react';
+import { Mic, MicOff, AlertTriangle, ShieldAlert, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -102,19 +102,44 @@ export default function VolunteerPage() {
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900 to-indigo-950/30 pointer-events-none z-0" />
       <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none z-0" />
 
-      <header className="flex-none p-6 pb-2 relative z-10">
-        <h1 className="text-sm font-mono tracking-widest text-slate-400 uppercase">Aegis Operations</h1>
-        <h2 className="text-2xl font-bold tracking-tight text-white mt-1">Volunteer Node</h2>
+      <header className="flex-none p-6 pb-2 relative z-10 flex justify-between items-end border-b border-white/5">
+        <div>
+          <h1 className="text-sm font-mono tracking-widest text-slate-400 uppercase">Aegis Operations</h1>
+          <h2 className="text-2xl font-bold tracking-tight text-white mt-1">Volunteer Node</h2>
+        </div>
+        <div className="flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/30">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[10px] font-mono tracking-widest uppercase font-bold">Deployed: Gate 7</span>
+        </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto p-6 flex flex-col gap-6 relative z-10 justify-center">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col gap-6 relative z-10">
         
-        <Card className={`glass-panel p-6 border-slate-700/50 rounded-2xl shadow-2xl flex flex-col items-center transition-colors duration-500 ${isListening ? 'border-indigo-500/50 shadow-[0_0_30px_rgba(99,102,241,0.2)]' : ''} ${status === 'success' ? 'border-emerald-500/50' : ''} ${status === 'error' ? 'border-destructive' : ''}`}>
+        {/* Instant Action Grid */}
+        <div className="grid grid-cols-2 gap-4">
+          <Button 
+            onClick={() => handleCrisisEscalation('REPORT THREAT')}
+            className="h-24 flex flex-col items-center justify-center gap-2 bg-destructive/20 hover:bg-destructive/30 text-destructive border border-destructive/30 rounded-2xl transition-all"
+          >
+            <AlertTriangle className="w-6 h-6" />
+            <span className="font-bold text-xs tracking-widest uppercase">Report Threat</span>
+          </Button>
+          <Button 
+            onClick={() => handleCrisisEscalation('REQUEST TRIAGE/AMBULANCE')}
+            className="h-24 flex flex-col items-center justify-center gap-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 border border-amber-500/30 rounded-2xl transition-all"
+          >
+            <ShieldAlert className="w-6 h-6" />
+            <span className="font-bold text-xs tracking-widest uppercase text-center leading-tight">Request<br/>Triage</span>
+          </Button>
+        </div>
+
+        {/* Priority Comms (Hold to Talk) */}
+        <Card className={`glass-panel p-6 border-slate-700/50 rounded-3xl shadow-2xl flex flex-col items-center transition-colors duration-500 ${isListening ? 'border-indigo-500/50 shadow-[0_0_30px_rgba(99,102,241,0.2)]' : ''} ${status === 'success' ? 'border-emerald-500/50' : ''} ${status === 'error' ? 'border-destructive' : ''}`}>
           
-          <div className="w-full mb-8 text-center space-y-2">
-            <AlertTriangle className="w-8 h-8 mx-auto text-amber-500 mb-2" />
-            <h3 className="text-lg font-bold">Priority Comms</h3>
-            <p className="text-xs text-slate-400 font-mono tracking-widest uppercase">
+          <div className="w-full mb-6 text-center space-y-1">
+            <Mic className="w-6 h-6 mx-auto text-indigo-400 mb-2" />
+            <h3 className="text-md font-bold uppercase tracking-tight text-slate-200">Priority Comms</h3>
+            <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase">
               Wake Word: "Command Code Alpha:"
             </p>
           </div>
@@ -125,9 +150,9 @@ export default function VolunteerPage() {
             onPointerDown={startListening}
             onPointerUp={stopListening}
             onPointerLeave={stopListening}
-            className={`w-full h-32 rounded-3xl font-black text-2xl tracking-tight transition-all duration-300 ${
+            className={`w-full h-32 rounded-2xl font-black text-2xl tracking-tight transition-all duration-300 ${
               isListening 
-                ? 'bg-indigo-600 hover:bg-indigo-500 scale-95 shadow-[inset_0_5px_15px_rgba(0,0,0,0.3)]' 
+                ? 'bg-indigo-600 hover:bg-indigo-500 scale-[0.98] shadow-[inset_0_5px_15px_rgba(0,0,0,0.3)]' 
                 : 'bg-indigo-500 hover:bg-indigo-400 shadow-[0_10px_25px_rgba(99,102,241,0.3)]'
             }`}
           >
@@ -137,7 +162,7 @@ export default function VolunteerPage() {
             </div>
           </Button>
 
-          <div className="w-full mt-8 p-4 bg-slate-950/50 rounded-xl min-h-[100px] border border-slate-800 flex flex-col">
+          <div className="w-full mt-6 p-4 bg-slate-950/60 rounded-xl min-h-[80px] border border-slate-800 flex flex-col">
             <span className="text-[10px] uppercase tracking-widest text-slate-500 mb-2 font-mono">Live Transcript</span>
             <p 
               className="font-mono text-sm text-slate-300 flex-1"
@@ -148,17 +173,41 @@ export default function VolunteerPage() {
           </div>
 
           {status === 'success' && (
-            <div className="mt-4 w-full p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-xs font-mono text-center">
-              [SYSTEM] CRISIS ESCALATION DEPLOYED
+            <div className="mt-4 w-full p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-[10px] uppercase tracking-widest font-mono text-center animate-in fade-in zoom-in duration-300">
+              [SYSTEM] Transmission Confirmed
             </div>
           )}
           {status === 'error' && (
-            <div className="mt-4 w-full p-3 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive text-xs font-mono text-center">
-              [SYSTEM] TRANSMISSION FAILED
+            <div className="mt-4 w-full p-3 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive text-[10px] uppercase tracking-widest font-mono text-center animate-in fade-in zoom-in duration-300">
+              [SYSTEM] Transmission Failed
             </div>
           )}
 
         </Card>
+
+        {/* Command Inbox */}
+        <div className="flex flex-col gap-3">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 px-2 flex items-center gap-2">
+            <Inbox className="w-4 h-4" /> Command Inbox
+          </h3>
+          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3">
+            <div className="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+              <div>
+                <p className="text-xs font-mono text-slate-400 mb-1">14:02 PM • COMMAND CENTER</p>
+                <p className="text-sm font-semibold text-slate-200">Maintain current position. Flow rate stable.</p>
+              </div>
+            </div>
+            {/* Example of a high priority order */}
+            <div className="flex items-start gap-3 p-3 bg-destructive/10 rounded-xl border border-destructive/30">
+              <div className="w-2 h-2 rounded-full bg-destructive mt-1.5 shrink-0 animate-pulse" />
+              <div>
+                <p className="text-xs font-mono text-destructive mb-1">14:15 PM • AEGIS SUPERVISOR AI</p>
+                <p className="text-sm font-bold text-destructive">LOCK GATE 7 NOW. PREPARE FOR REDIRECT.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </main>
     </div>
