@@ -11,10 +11,31 @@ export default function VolunteerPage() {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [status, setStatus] = useState<'idle' | 'listening' | 'processing' | 'error' | 'success'>('idle');
+  const [inbox, setInbox] = useState<{ id: string, time: string, msg: string, priority: boolean }[]>([
+    { id: '1', time: '14:02 PM', msg: 'Maintain current position. Flow rate stable.', priority: false }
+  ]);
   
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
+    // Listen for Admin Global Broadcasts (Volunteer Alerts)
+    const supabase = createBrowserSupabaseClient();
+    const channel = supabase.channel('volunteer_event_logs')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'event_logs' }, (payload) => {
+        const newLog = payload.new as any;
+        if (newLog.event_type === 'ZONE_WARNING' && newLog.ai_action_taken?.includes('[ADMIN BROADCAST]')) {
+          const actionText = newLog.ai_action_taken as string;
+          // Only show custom broadcasts or volunteer alerts
+          if (actionText.includes('Volunteer Alert:') || actionText.includes('Custom Broadcast:')) {
+            const cleanMsg = actionText.replace('[ADMIN BROADCAST] Volunteer Alert:', '').replace('[ADMIN BROADCAST] Custom Broadcast:', '').trim();
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            setInbox(prev => [{ id: newLog.log_id || Date.now().toString(), time: timeStr, msg: cleanMsg, priority: true }, ...prev]);
+            toast.warning('NEW COMMAND RECEIVED', { description: cleanMsg, duration: 8000 });
+          }
+        }
+      })
+      .subscribe();
     // Initialize Web Speech API
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -200,22 +221,16 @@ export default function VolunteerPage() {
           <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 px-2 flex items-center gap-2">
             <Inbox className="w-4 h-4" /> Command Inbox
           </h3>
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3">
-            <div className="flex items-start gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-              <div>
-                <p className="text-xs font-mono text-slate-400 mb-1">14:02 PM • COMMAND CENTER</p>
-                <p className="text-sm font-semibold text-slate-200">Maintain current position. Flow rate stable.</p>
+          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3 max-h-[300px] overflow-y-auto">
+            {inbox.map((msg) => (
+              <div key={msg.id} className={`flex items-start gap-3 p-3 rounded-xl border ${msg.priority ? 'bg-destructive/10 border-destructive/30' : 'bg-slate-950 border-slate-800'}`}>
+                <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${msg.priority ? 'bg-destructive animate-pulse' : 'bg-emerald-500'}`} />
+                <div>
+                  <p className={`text-xs font-mono mb-1 ${msg.priority ? 'text-destructive' : 'text-slate-400'}`}>{msg.time} • COMMAND CENTER</p>
+                  <p className={`text-sm ${msg.priority ? 'font-bold text-destructive' : 'font-semibold text-slate-200'}`}>{msg.msg}</p>
+                </div>
               </div>
-            </div>
-            {/* Example of a high priority order */}
-            <div className="flex items-start gap-3 p-3 bg-destructive/10 rounded-xl border border-destructive/30">
-              <div className="w-2 h-2 rounded-full bg-destructive mt-1.5 shrink-0 animate-pulse" />
-              <div>
-                <p className="text-xs font-mono text-destructive mb-1">14:15 PM • AEGIS SUPERVISOR AI</p>
-                <p className="text-sm font-bold text-destructive">LOCK GATE 7 NOW. PREPARE FOR REDIRECT.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

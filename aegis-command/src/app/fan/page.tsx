@@ -1,19 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { VanguardAlertBanner } from '@/components/vanguard/VanguardAlertBanner';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { AlertOctagon, ShieldAlert } from 'lucide-react';
+import { toast } from 'sonner';
+import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 
 export default function FanPage() {
   const [sosStatus, setSosStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
 
+  // Listen for Admin Global Broadcasts
+  useEffect(() => {
+    const supabase = createBrowserSupabaseClient();
+    const channel = supabase.channel('fan_event_logs')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'event_logs' }, (payload) => {
+        const newLog = payload.new as any;
+        if (newLog.event_type === 'ZONE_WARNING' && newLog.ai_action_taken?.includes('[ADMIN BROADCAST]')) {
+          toast.warning('COMMAND CENTER ALERT', { 
+            description: newLog.ai_action_taken.replace('[ADMIN BROADCAST] ', ''),
+            duration: 10000,
+            className: 'bg-amber-500/10 border-amber-500/50 text-amber-500'
+          });
+        }
+      })
+      .subscribe();
+      
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   const handleSOS = async () => {
     setSosStatus('sending');
     try {
-      // Simulate sending high-priority SOS with User ID and Gate info
+      const supabase = createBrowserSupabaseClient();
+      await supabase.from('event_logs').insert([{
+        event_type: 'RED_ZONE_SOS',
+        ai_action_taken: '[FAN SOS] Emergency assistance requested by Rahul Sharma at Gate 7',
+        target_block_id: 'GATE_7'
+      }]);
+
       const response = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -22,12 +49,15 @@ export default function FanPage() {
 
       if (response.ok) {
         setSosStatus('sent');
+        toast.success('SOS Sent', { description: 'Command Center has been notified. Maintain current position.' });
       } else {
         setSosStatus('idle');
+        toast.error('Network Error', { description: 'Retrying transmission...' });
       }
     } catch (error) {
       console.error(error);
       setSosStatus('idle');
+      toast.error('Network Error', { description: 'Failed to reach Command Center.' });
     }
   };
 

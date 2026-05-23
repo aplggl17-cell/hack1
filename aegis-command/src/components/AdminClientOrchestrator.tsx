@@ -254,25 +254,40 @@ function VolunteerManagementTab() {
   );
 }
 
-function ChatInterface({ initialMessages, placeholder, title, icon }: {
+function ChatInterface({ initialMessages, placeholder, title, icon, broadcastLabel }: {
   initialMessages: Message[];
   placeholder: string;
   title: string;
   icon: React.ReactNode;
+  broadcastLabel?: string;
 }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [draft, setDraft] = useState('');
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!draft.trim()) return;
     const now = new Date();
+    const newMsg = draft.trim();
+    
     setMessages(m => [...m, {
       from: 'Admin',
-      text: draft.trim(),
+      text: newMsg,
       time: `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`,
       outgoing: true,
     }]);
     setDraft('');
+
+    if (broadcastLabel) {
+      try {
+        const supabase = createBrowserSupabaseClient();
+        await supabase.from('event_logs').insert([{
+          event_type: 'ZONE_WARNING',
+          ai_action_taken: `[ADMIN BROADCAST] ${broadcastLabel}: ${newMsg}`,
+        }]);
+      } catch (err) {
+        console.error('Failed to broadcast chat:', err);
+      }
+    }
   };
 
   return (
@@ -546,6 +561,7 @@ export function AdminClientOrchestrator() {
               placeholder="Dispatch order to volunteers..."
               title="Volunteer Dispatch Channel"
               icon={<Radio className="w-5 h-5 text-[oklch(0.75_0.18_85)]" />}
+              broadcastLabel="Volunteer Alert"
             />
           </TabsContent>
 
@@ -555,6 +571,7 @@ export function AdminClientOrchestrator() {
               placeholder="Send Vanguard rerouting prompt to fans..."
               title="Fan Rerouting Channel"
               icon={<MessageSquare className="w-5 h-5 text-[oklch(0.65_0.15_150)]" />}
+              broadcastLabel="Fan Rerouting"
             />
           </TabsContent>
 
