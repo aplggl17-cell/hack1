@@ -61,6 +61,10 @@ Instead of waiting for a density threshold to reach 6 persons/m², the Genkit Su
 ### 3. Autonomous Maker-Checker Triage
 When traditional VHF radio silos fail, Aegis acts instantly. If a Volunteer triggers the "Command Code Alpha" Voice PTT due to sudden structural instability, the AI instantly halts all incoming digital traffic. It locks down the Admin Dashboard, drafts an immediate SOS routing map, and proactively alerts relevant authorities (Rapid Action Medical Teams, Police, and local emergency response) with exact spatial coordinates. It forces the Human Admin to make a definitive "Approve/Override" decision, entirely bypassing bureaucratic communication latency.
 
+
+<img width="1896" height="962" alt="image" src="https://github.com/user-attachments/assets/f6f3edd3-524a-4654-bc4d-0411e8ed699e" />
+
+
 ---
 
 ## ⚡ Core Architecture
