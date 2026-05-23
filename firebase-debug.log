@@ -1,0 +1,83 @@
+[debug] [2026-05-23T09:25:23.145Z] ----------------------------------------------------------------------
+[debug] [2026-05-23T09:25:23.147Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\SahajJain\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
+[debug] [2026-05-23T09:25:23.147Z] CLI Version:   15.18.0
+[debug] [2026-05-23T09:25:23.147Z] Platform:      win32
+[debug] [2026-05-23T09:25:23.147Z] Node Version:  v24.14.0
+[debug] [2026-05-23T09:25:23.147Z] Time:          Sat May 23 2026 14:55:23 GMT+0530 (India Standard Time)
+[debug] [2026-05-23T09:25:23.147Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-23T09:25:25.602Z] Object "/apphosting" in "firebase.json" is missing required property: {"missingProperty":"backendId"}
+[debug] [2026-05-23T09:25:25.603Z] Field "/apphosting" in "firebase.json" is possibly invalid: must be array
+[debug] [2026-05-23T09:25:25.603Z] Field "/apphosting" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-05-23T09:25:25.606Z] Object "/apphosting" in "firebase.json" is missing required property: {"missingProperty":"backendId"}
+[debug] [2026-05-23T09:25:25.606Z] Field "/apphosting" in "firebase.json" is possibly invalid: must be array
+[debug] [2026-05-23T09:25:25.606Z] Field "/apphosting" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\SahajJain\Documents\APL\Hack1
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-05-23T09:25:32.958Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-23T09:25:32.958Z] > authorizing via signed-in user (aplggl17@gmail.com)
+[debug] [2026-05-23T09:25:32.960Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:32.960Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:32.962Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/hack1-30dbc [none]
+[debug] [2026-05-23T09:25:33.676Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/hack1-30dbc 200
+[debug] [2026-05-23T09:25:33.676Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/hack1-30dbc {"projectId":"hack1-30dbc","projectNumber":"408059536379","displayName":"hack1","name":"projects/hack1-30dbc","resources":{"hostingSite":"hack1-30dbc"},"state":"ACTIVE","etag":"1_48863214-7ec3-44ad-a343-61206b0524bf"}
+[info] i  Using project hack1-30dbc (hack1) . 
+[info] 
+=== Hosting Setup
+[info] 
+[info] 
+=== App Hosting Setup
+[debug] [2026-05-23T09:25:45.908Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:45.909Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:45.909Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/hack1-30dbc/billingInfo [none]
+[debug] [2026-05-23T09:25:47.392Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/hack1-30dbc/billingInfo 200
+[debug] [2026-05-23T09:25:47.392Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/hack1-30dbc/billingInfo {"name":"projects/hack1-30dbc/billingInfo","projectId":"hack1-30dbc","billingAccountName":"billingAccounts/01F613-F2B1E1-539DED","billingEnabled":true}
+[debug] [2026-05-23T09:25:47.396Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:47.396Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:47.396Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts/firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-05-23T09:25:47.396Z] >>> [apiv2][(partial)header] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts/firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com:testIamPermissions  x-goog-user-project=hack1-30dbc
+[debug] [2026-05-23T09:25:47.396Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts/firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-05-23T09:25:48.954Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts/firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com:testIamPermissions 200
+[debug] [2026-05-23T09:25:48.954Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts/firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-05-23T09:25:48.955Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:48.955Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:48.955Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts [none]
+[debug] [2026-05-23T09:25:48.955Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts {"accountId":"firebase-app-hosting-compute","serviceAccount":{"displayName":"Firebase App Hosting compute service account","description":"Default service account used to run builds and deploys for Firebase App Hosting"}}
+[debug] [2026-05-23T09:25:50.592Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts 409
+[debug] [2026-05-23T09:25:50.593Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/hack1-30dbc/serviceAccounts [omitted]
+[debug] [2026-05-23T09:25:50.595Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:50.595Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:50.595Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:getIamPolicy [none]
+[debug] [2026-05-23T09:25:51.273Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:getIamPolicy 200
+[debug] [2026-05-23T09:25:51.274Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:getIamPolicy {"version":1,"etag":"BwZSeJm7ct4=","bindings":[{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:408059536379@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-408059536379@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.readTokenAccessor","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:408059536379-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-408059536379@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com","serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/firebaseapphosting.computeRunner","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:aplggl17@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-408059536379@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.admin","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/storage.objectViewer","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]}]}
+[debug] [2026-05-23T09:25:51.275Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:51.275Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:51.275Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:setIamPolicy [none]
+[debug] [2026-05-23T09:25:51.275Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:setIamPolicy {"policy":{"version":1,"etag":"BwZSeJm7ct4=","bindings":[{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:408059536379@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-408059536379@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.readTokenAccessor","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:408059536379-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-408059536379@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com","serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/firebaseapphosting.computeRunner","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:aplggl17@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-408059536379@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.admin","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/storage.objectViewer","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2026-05-23T09:25:52.620Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:setIamPolicy 200
+[debug] [2026-05-23T09:25:52.621Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack1-30dbc:setIamPolicy {"version":1,"etag":"BwZSeLtSgiE=","bindings":[{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:408059536379@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-408059536379@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.readTokenAccessor","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.serviceAgent","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:408059536379-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-408059536379@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com","serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/firebaseapphosting.computeRunner","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@hack1-30dbc.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:aplggl17@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-408059536379@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/secretmanager.admin","members":["serviceAccount:service-408059536379@gcp-sa-devconnect.iam.gserviceaccount.com"]},{"role":"roles/storage.objectViewer","members":["serviceAccount:firebase-app-hosting-compute@hack1-30dbc.iam.gserviceaccount.com"]}]}
+[info] i  This command links your local project to Firebase App Hosting. You will be able to deploy your web app with `firebase deploy` after setup. 
+[debug] [2026-05-23T09:25:58.847Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:58.848Z] Checked if tokens are valid: true, expires at: 1779530824990
+[debug] [2026-05-23T09:25:58.848Z] >>> [apiv2][query] GET https://firebaseapphosting.googleapis.com/v1beta/projects/hack1-30dbc/locations/-/backends 
+[debug] [2026-05-23T09:26:00.687Z] <<< [apiv2][status] GET https://firebaseapphosting.googleapis.com/v1beta/projects/hack1-30dbc/locations/-/backends 200
+[debug] [2026-05-23T09:26:00.687Z] <<< [apiv2][body] GET https://firebaseapphosting.googleapis.com/v1beta/projects/hack1-30dbc/locations/-/backends {}
