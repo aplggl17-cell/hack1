@@ -1,0 +1,8 @@
+# apphosting.yaml - Firebase App Hosting Configuration
+env:
+  - variable: NEXT_PUBLIC_SUPABASE_URL
+    value: "https://qiddniktzgjxnxzdydjy.supabase.co" # Public URL for build/runtime hydration
+  - variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+    value: "placeholder_anon_key_override_in_console" # Public Anon Key placeholder
+  - variable: SUPABASE_SERVICE_ROLE_KEY
+    secret: SUPABASE_SERVICE_ROLE_KEY # Secret key reference, safely injected at runtime
