@@ -81,6 +81,77 @@ Admins monitor the stadium via a dark-mode **Framer Motion SVG map** that interp
 
 ---
 
+## 🌊 Architecture & Data Flows
+
+Aegis operates on a strict event-driven, bi-directional WebSocket architecture to ensure zero latency during kinetic threat escalations.
+
+### Request Flow & Threat Alert Sequence
+
+```mermaid
+graph TD
+    %% Node Definitions
+    subgraph Fan Node
+      F1[Fan PWA]
+      F2[Offline Zustand Store]
+    end
+
+    subgraph Volunteer Node
+      V1[Volunteer PWA]
+      V2[Web Speech API]
+    end
+
+    subgraph Admin Node
+      A1[Admin Command Center]
+      A2[Maker-Checker UI]
+    end
+
+    subgraph Backend Infrastructure
+      SB[(Supabase PostgreSQL)]
+      API[Next.js SSE API]
+      GK{Genkit AI Supervisor}
+    end
+
+    %% Standard Request Flow
+    F1 -.->|1. Fetch Pass/Bounties| SB
+    F2 -.->|Hydrate Ticket Offline| F1
+    V2 -->|2. Voice PTT 'Code Alpha'| API
+    
+    %% Threat Alert Flow
+    F1 ==>|3. Tap 'SOS Triage' Button| SB
+    V1 ==>|3. Tap 'Report Threat'| SB
+    
+    %% Realtime Sync
+    SB ===>|4. PostgreSQL 'INSERT' Trigger| SB
+    SB ===>|5. Real-Time WS Broadcast 'RED_ZONE_SOS'| A1
+    
+    %% Admin Execution
+    A1 ===>|6. Lock Screen / Trigger Modal| A2
+    A2 -->|7. Human Approves 'Crisis Protocol'| API
+    
+    %% AI Resolution
+    API -->|8. Evaluate Evacuation Vectors| GK
+    GK -->|9. Dispatch Reroute Orders| SB
+    
+    %% Closing the Loop
+    SB -.->|10. Global Broadcast Sync| F1
+    SB -.->|10. Global Broadcast Sync| V1
+```
+
+### 1. Data Flow (Vanguard Protocol)
+1. **Ingestion**: Hardware nodes (or mock streaming scripts) `UPSERT` crowd densities directly into `stadium_blocks`.
+2. **Analysis**: Genkit Supervisor continuously evaluates if a gate density breaches 75%. 
+3. **Action**: It inserts a Gamification Bounty targeting fans at that gate to reroute them for points.
+4. **Delivery**: Supabase pushes the new `vanguard_bounties` row to the Fan PWA via Realtime WebSockets.
+
+### 2. Critical Threat Alert Flow (Zero-Trust SOS)
+1. **Trigger**: A Fan hits "SOS" or a Volunteer taps "Report Threat".
+2. **Audit Logging**: The frontend immediately `INSERT`s an immutable `RED_ZONE_SOS` record into the `event_logs` table.
+3. **Real-Time Override**: Supabase broadcasts the `event_logs` insert to the Admin Command Center in milliseconds.
+4. **Maker-Checker Wall**: The Admin UI instantly locks down. The Human Admin must review the AI's drafted SOS message and click "Approve Crisis Protocol."
+5. **Bi-Directional Broadcast**: Upon approval, the Admin pushes a `ZONE_WARNING` broadcast back to the `event_logs` table, which instantly renders as a highly-visible Alert Toast on all Fan and Volunteer devices.
+
+---
+
 ## 🛠️ Tech Stack Matrix
 
 | Layer | Framework / Version | Justification |
