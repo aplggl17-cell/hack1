@@ -424,6 +424,28 @@ export function AdminClientOrchestrator() {
     }
   }, [executeAgentQuery, agentState, crisisState.active]);
 
+  // Listen for Volunteer SOS triggers via Supabase Realtime
+  useEffect(() => {
+    const supabase = createBrowserSupabaseClient();
+    const channel = supabase.channel('admin_event_logs')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'event_logs' }, (payload) => {
+        const newLog = payload.new as any;
+        if (newLog.event_type === 'RED_ZONE_SOS') {
+          const targetGate = newLog.target_block_id || 'GATE_SOS';
+          setCrisisState({ active: true, gate: targetGate });
+          executeAgentQuery(targetGate, 100);
+          toast.error('EMERGENCY TRANSMISSION RECEIVED', { 
+            description: newLog.ai_action_taken, 
+            duration: 10000,
+            className: 'bg-destructive text-destructive-foreground border-destructive/50'
+          });
+        }
+      })
+      .subscribe();
+      
+    return () => { supabase.removeChannel(channel); };
+  }, [executeAgentQuery]);
+
   return (
     <>
       <AnimatePresence>
