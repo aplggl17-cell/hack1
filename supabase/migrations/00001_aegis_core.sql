@@ -115,3 +115,48 @@ BEGIN
     RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ==========================================
+-- ROW-LEVEL SECURITY (RLS) POLICIES
+-- ==========================================
+
+-- 1. vanguard_bounties
+ALTER TABLE public.vanguard_bounties ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Fans read own bounties" 
+  ON public.vanguard_bounties FOR SELECT 
+  TO authenticated 
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Admins insert bounties" 
+  ON public.vanguard_bounties FOR INSERT 
+  TO authenticated 
+  WITH CHECK (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'ADMIN')
+  );
+
+-- 2. stadium_blocks
+ALTER TABLE public.stadium_blocks ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admin stadium update" 
+  ON public.stadium_blocks FOR UPDATE 
+  TO authenticated 
+  USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'ADMIN')
+  );
+
+-- 3. users
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users read own or Admin reads all" 
+  ON public.users FOR SELECT 
+  TO authenticated 
+  USING (
+    auth.uid() = id OR 
+    EXISTS (SELECT 1 FROM public.users u WHERE u.id = auth.uid() AND u.role = 'ADMIN')
+  );
+
+-- 4. event_logs
+ALTER TABLE public.event_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Authenticated logs insert" 
+  ON public.event_logs FOR INSERT 
+  TO authenticated 
+  WITH CHECK (true);
+
