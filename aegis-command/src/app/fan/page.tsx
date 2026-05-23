@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { VanguardAlertBanner } from '@/components/vanguard/VanguardAlertBanner';
 import { Card } from '@/components/ui/card';
