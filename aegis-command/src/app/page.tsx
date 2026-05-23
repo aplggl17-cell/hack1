@@ -224,7 +224,7 @@ export default function LandingPage() {
                   <div>
                     <h4 className="text-sm font-bold text-foreground mb-1">Maker-Checker Triage</h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Voice PTT triggers instant digital lock-downs, bypassing bureaucratic communication latency entirely.
+                      Voice PTT triggers instant digital lock-downs and proactive alerts to medical & police teams, bypassing bureaucratic latency.
                     </p>
                   </div>
                 </div>

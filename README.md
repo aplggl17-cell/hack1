@@ -59,7 +59,7 @@ Human security personnel cannot neurologically distinguish a crowd at 3 persons/
 Instead of waiting for a density threshold to reach 6 persons/m², the Genkit Supervisor initiates **"Trend Alerts"**. If the AI detects that Gate 7's incoming pedestrian volume will breach the 4.5 persons/m² safety limit in 10 minutes, it deploys the Vanguard Protocol. The system automatically pushes gamified digital bounties to Fans' mobile passes, actively rerouting traffic to underutilized gates and bleeding off compressive pressure before the choke point forms.
 
 ### 3. Autonomous Maker-Checker Triage
-When traditional VHF radio silos fail, Aegis acts instantly. If a Volunteer triggers the "Command Code Alpha" Voice PTT due to sudden structural instability, the AI instantly halts all incoming digital traffic. It locks down the Admin Dashboard, drafts an immediate SOS routing map for Rapid Action Medical Teams, and forces the Human Admin to make a definitive "Approve/Override" decision, entirely bypassing bureaucratic communication latency.
+When traditional VHF radio silos fail, Aegis acts instantly. If a Volunteer triggers the "Command Code Alpha" Voice PTT due to sudden structural instability, the AI instantly halts all incoming digital traffic. It locks down the Admin Dashboard, drafts an immediate SOS routing map, and proactively alerts relevant authorities (Rapid Action Medical Teams, Police, and local emergency response) with exact spatial coordinates. It forces the Human Admin to make a definitive "Approve/Override" decision, entirely bypassing bureaucratic communication latency.
 
 ---
 
