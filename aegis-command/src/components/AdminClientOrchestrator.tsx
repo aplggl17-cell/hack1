@@ -14,6 +14,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
 import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 import type { User } from '@/types';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Map,
   CalendarDays,
@@ -77,12 +78,28 @@ const seedFanMsg: Message[] = [
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
-function TacticalTab({ onDensityUpdate }: { onDensityUpdate: (g: string, d: number) => void }) {
+function TacticalTab({ onDensityUpdate, agentControls }: { onDensityUpdate: (g: string, d: number) => void, agentControls: any }) {
   const { agentState, thoughts, activeTool, finalText } = useAgentStream();
+  
   return (
     <div className="grid grid-cols-10 gap-6 h-full min-h-[600px]">
-      <div className="col-span-10 lg:col-span-7 h-full">
+      <div className="col-span-10 lg:col-span-7 h-full flex flex-col gap-4">
         <StadiumMap onDensityUpdate={onDensityUpdate} />
+        <div className={`${glass} p-4 flex gap-4 items-center`}>
+          <GlassNoise />
+          <div className="relative z-10 flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-widest mr-auto">
+            <AlertTriangle className="w-4 h-4 text-[oklch(0.75_0.18_85)]" /> Debug Actions
+          </div>
+          <Button size="sm" variant="outline" className="relative z-10 border-border/50 text-xs" onClick={() => agentControls.executeAgentQuery('WEATHER_SYSTEM', 100)}>
+            Simulate Rain
+          </Button>
+          <Button size="sm" variant="outline" className="relative z-10 border-amber-500/30 text-amber-500 text-xs hover:bg-amber-500/10" onClick={() => agentControls.executeAgentQuery('GATE_7', 75)}>
+            Simulate Orange Surge
+          </Button>
+          <Button size="sm" variant="outline" className="relative z-10 border-destructive/30 text-destructive text-xs hover:bg-destructive/10" onClick={() => onDensityUpdate('GATE_7', 95)}>
+            Simulate Red Crush
+          </Button>
+        </div>
       </div>
       <div className="col-span-10 lg:col-span-3 flex flex-col gap-6 h-full">
         <div className="flex-1 min-h-[300px]">
@@ -389,76 +406,141 @@ function GlobalNotificationsTab() {
 
 // ─── Main Orchestrator ────────────────────────────────────────────────────────
 export function AdminClientOrchestrator() {
-  const { executeAgentQuery, agentState } = useAgentStream();
+  const agentControls = useAgentStream();
+  const { executeAgentQuery, agentState } = agentControls;
   const lastInvocationTime = useRef<number>(0);
+  const [crisisState, setCrisisState] = useState<{ active: boolean, gate: string }>({ active: false, gate: '' });
 
   const handleDensityUpdate = useCallback((gateId: string, density: number) => {
-    if (density > 75) {
+    if (density >= 95 && !crisisState.active) {
+      setCrisisState({ active: true, gate: gateId });
+      executeAgentQuery(gateId, density);
+    } else if (density > 75 && density < 95) {
       const now = Date.now();
       if (now - lastInvocationTime.current > 10000 && agentState === 'idle') {
         lastInvocationTime.current = now;
         executeAgentQuery(gateId, density);
       }
     }
-  }, [executeAgentQuery, agentState]);
+  }, [executeAgentQuery, agentState, crisisState.active]);
 
   return (
-    <Tabs defaultValue="tactical" orientation="horizontal" className="flex-1 flex flex-col gap-4 min-h-0">
-      <TabsList className="flex-shrink-0 w-full justify-start gap-1 h-auto p-1.5 bg-muted/20 border border-border/40 rounded-xl overflow-x-auto">
-        {[
-          { value: 'tactical',   icon: <Map className="w-4 h-4" />,          label: 'Tactical Map' },
-          { value: 'event',      icon: <CalendarDays className="w-4 h-4" />, label: 'Event Details' },
-          { value: 'volunteers', icon: <Users className="w-4 h-4" />,        label: 'Volunteers' },
-          { value: 'vol-comms',  icon: <Radio className="w-4 h-4" />,        label: 'Vol. Comms' },
-          { value: 'fan-comms',  icon: <MessageSquare className="w-4 h-4" />,label: 'Fan Comms' },
-          { value: 'notify',     icon: <Bell className="w-4 h-4" />,         label: 'Notifications' },
-        ].map(tab => (
-          <TabsTrigger
-            key={tab.value}
-            value={tab.value}
-            className="gap-2 px-4 py-2 text-xs rounded-lg font-medium"
+    <>
+      <AnimatePresence>
+        {crisisState.active && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6"
           >
-            {tab.icon}
-            <span className="hidden sm:inline">{tab.label}</span>
-          </TabsTrigger>
-        ))}
-      </TabsList>
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-slate-950 border-2 border-destructive/50 rounded-3xl shadow-[0_0_100px_rgba(239,68,68,0.2)] max-w-2xl w-full p-8 flex flex-col items-center text-center relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.05] mix-blend-overlay pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-destructive/20 to-transparent pointer-events-none" />
+              
+              <AlertTriangle className="w-16 h-16 text-destructive animate-pulse mb-6 relative z-10" />
+              
+              <h2 className="text-3xl font-black uppercase tracking-tighter text-white mb-2 relative z-10">
+                Critical Density Detected
+              </h2>
+              <div className="text-destructive font-mono font-bold tracking-widest text-sm mb-8 relative z-10 bg-destructive/10 px-4 py-1.5 rounded-full border border-destructive/20">
+                {crisisState.gate} • SHOCKWAVE RISK HIGH
+              </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto">
-        <TabsContent value="tactical" keepMounted>
-          <TacticalTab onDensityUpdate={handleDensityUpdate} />
-        </TabsContent>
+              <div className="w-full bg-black/40 rounded-xl p-4 text-left border border-white/5 mb-8 relative z-10">
+                <p className="text-slate-400 text-xs font-mono uppercase tracking-widest mb-3">AI Copilot Analysis</p>
+                <div className="space-y-2 font-mono text-sm">
+                  <p className="text-slate-300">Fetching Volunteer Lead for {crisisState.gate}...</p>
+                  <p className="text-emerald-400">[Name: Rahul Sharma, Ph: +91 98765 43210]</p>
+                  <p className="text-amber-400">Drafting SOS to Fans to step back...</p>
+                  <p className="text-destructive font-bold animate-pulse mt-2">AWAITING HUMAN APPROVAL</p>
+                </div>
+              </div>
 
-        <TabsContent value="event">
-          <EventDetailsTab />
-        </TabsContent>
+              <div className="flex gap-4 w-full relative z-10">
+                <Button 
+                  onClick={() => {
+                    setCrisisState({ active: false, gate: '' });
+                    toast.success('Crisis Protocol Deployed', { description: 'Lockdown orders dispatched to Volunteer and Fans.' });
+                  }}
+                  className="flex-1 h-16 text-lg font-black tracking-widest uppercase bg-destructive hover:bg-destructive/90 text-white shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                >
+                  Approve Crisis Protocol
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => setCrisisState({ active: false, gate: '' })}
+                  className="h-16 px-8 text-sm font-bold tracking-widest uppercase border-white/10 hover:bg-white/5"
+                >
+                  Override
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        <TabsContent value="volunteers">
-          <VolunteerManagementTab />
-        </TabsContent>
+      <Tabs defaultValue="tactical" orientation="horizontal" className="flex-1 flex flex-col gap-4 min-h-0">
+        <TabsList className="flex-shrink-0 w-full justify-start gap-1 h-auto p-1.5 bg-muted/20 border border-border/40 rounded-xl overflow-x-auto">
+          {[
+            { value: 'tactical',   icon: <Map className="w-4 h-4" />,          label: 'Tactical Map' },
+            { value: 'event',      icon: <CalendarDays className="w-4 h-4" />, label: 'Event Details' },
+            { value: 'volunteers', icon: <Users className="w-4 h-4" />,        label: 'Volunteers' },
+            { value: 'vol-comms',  icon: <Radio className="w-4 h-4" />,        label: 'Vol. Comms' },
+            { value: 'fan-comms',  icon: <MessageSquare className="w-4 h-4" />,label: 'Fan Comms' },
+            { value: 'notify',     icon: <Bell className="w-4 h-4" />,         label: 'Notifications' },
+          ].map(tab => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className="gap-2 px-4 py-2 text-xs rounded-lg font-medium"
+            >
+              {tab.icon}
+              <span className="hidden sm:inline">{tab.label}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-        <TabsContent value="vol-comms">
-          <ChatInterface
-            initialMessages={seedVolMsg}
-            placeholder="Dispatch order to volunteers..."
-            title="Volunteer Dispatch Channel"
-            icon={<Radio className="w-5 h-5 text-[oklch(0.75_0.18_85)]" />}
-          />
-        </TabsContent>
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <TabsContent value="tactical" keepMounted>
+            <TacticalTab onDensityUpdate={handleDensityUpdate} agentControls={agentControls} />
+          </TabsContent>
 
-        <TabsContent value="fan-comms">
-          <ChatInterface
-            initialMessages={seedFanMsg}
-            placeholder="Send Vanguard rerouting prompt to fans..."
-            title="Fan Rerouting Channel"
-            icon={<MessageSquare className="w-5 h-5 text-[oklch(0.65_0.15_150)]" />}
-          />
-        </TabsContent>
+          <TabsContent value="event">
+            <EventDetailsTab />
+          </TabsContent>
 
-        <TabsContent value="notify">
-          <GlobalNotificationsTab />
-        </TabsContent>
-      </div>
-    </Tabs>
+          <TabsContent value="volunteers">
+            <VolunteerManagementTab />
+          </TabsContent>
+
+          <TabsContent value="vol-comms">
+            <ChatInterface
+              initialMessages={seedVolMsg}
+              placeholder="Dispatch order to volunteers..."
+              title="Volunteer Dispatch Channel"
+              icon={<Radio className="w-5 h-5 text-[oklch(0.75_0.18_85)]" />}
+            />
+          </TabsContent>
+
+          <TabsContent value="fan-comms">
+            <ChatInterface
+              initialMessages={seedFanMsg}
+              placeholder="Send Vanguard rerouting prompt to fans..."
+              title="Fan Rerouting Channel"
+              icon={<MessageSquare className="w-5 h-5 text-[oklch(0.65_0.15_150)]" />}
+            />
+          </TabsContent>
+
+          <TabsContent value="notify">
+            <GlobalNotificationsTab />
+          </TabsContent>
+        </div>
+      </Tabs>
+    </>
   );
 }
