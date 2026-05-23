@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, AlertTriangle, ShieldAlert, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
+import { createBrowserSupabaseClient } from '@/lib/supabase/client';
 
 export default function VolunteerPage() {
   const [isListening, setIsListening] = useState(false);
@@ -59,24 +61,32 @@ export default function VolunteerPage() {
   const handleCrisisEscalation = async (finalTranscript: string) => {
     setStatus('processing');
     try {
-      // Trigger the SSE Agent Route for Crisis Escalation
-      // Since it's SSE, we just need to hit it to trigger the supervisor logic
-      // In a real scenario we'd use the useAgentStream hook, but for the node,
-      // we just simulate sending the SOS to the backend.
+      // 1. Log to Enterprise Audit Trail (Supabase)
+      const supabase = createBrowserSupabaseClient();
+      await supabase.from('event_logs').insert([{
+        event_type: 'RED_ZONE_SOS',
+        ai_action_taken: `[VOLUNTEER SOS] Priority Transmission: ${finalTranscript}`,
+        target_block_id: 'GATE_7'
+      }]);
+
+      // 2. Trigger the SSE Agent Route
       const response = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentGate: 'GATE_SOS', density: 100, voiceCommand: finalTranscript }),
+        body: JSON.stringify({ currentGate: 'GATE_7', density: 100, voiceCommand: finalTranscript }),
       });
 
       if (response.ok) {
         setStatus('success');
+        toast.success('Command Center Notified', { description: `"${finalTranscript}" logged to secure audit trail.` });
       } else {
         setStatus('error');
+        toast.error('Transmission Failed', { description: 'Could not reach Command Center.' });
       }
     } catch (error) {
       console.error(error);
       setStatus('error');
+      toast.error('Network Error', { description: 'Check your connection.' });
     }
   };
 
