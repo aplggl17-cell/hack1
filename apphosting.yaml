@@ -3,6 +3,6 @@ env:
   - variable: NEXT_PUBLIC_SUPABASE_URL
     value: "https://qiddniktzgjxnxzdydjy.supabase.co" # Public URL for build/runtime hydration
   - variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
-    value: "placeholder_anon_key_override_in_console" # Public Anon Key placeholder
+    value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpZGRuaWt0emdqeG54emR5ZGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NjY5MzMsImV4cCI6MjA5NTA0MjkzM30.yBKWmg5GRSx05YfFEIkjWzofimYWNcM1Mf2ZLvqQkAs"
   - variable: SUPABASE_SERVICE_ROLE_KEY
     secret: SUPABASE_SERVICE_ROLE_KEY # Secret key reference, safely injected at runtime
