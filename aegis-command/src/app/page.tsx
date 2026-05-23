@@ -98,35 +98,139 @@ export default function LandingPage() {
           />
         </motion.div>
 
-        {/* Research Context & Stats */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-5xl mb-16">
-          {/* Tragedy Context */}
-          <div className="bg-destructive/5 border border-destructive/20 rounded-2xl p-8 relative overflow-hidden backdrop-blur-[64px]">
-            <div className="flex items-center gap-3 mb-6 text-destructive">
-              <ShieldAlert className="w-6 h-6" />
-              <h2 className="text-xl font-bold tracking-tight uppercase">Solving the Manual Gap</h2>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-              On June 4, 2025, the spontaneous influx of fans during the RCB victory parade exposed profound vulnerabilities in manual crowd control paradigms at M. Chinnaswamy Stadium.
-            </p>
-            <div className="flex gap-6 mt-6 pt-6 border-t border-destructive/10">
-              <div>
-                <div className="text-3xl font-mono text-destructive font-bold">11</div>
-                <div className="text-xs uppercase tracking-widest text-destructive/70 mt-1">Fatalities</div>
-              </div>
-              <div>
-                <div className="text-3xl font-mono text-destructive font-bold">56</div>
-                <div className="text-xs uppercase tracking-widest text-destructive/70 mt-1">Injuries</div>
-              </div>
-            </div>
+        {/* Detailed Research & Statistics Matrix */}
+        <motion.div variants={itemVariants} className="w-full max-w-7xl mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <ShieldAlert className="w-6 h-6 text-destructive" />
+            <h2 className="text-2xl font-bold tracking-tight uppercase">The Statistics of the Manual Gap</h2>
           </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Column 1: Historical Ledger */}
+            <div className="bg-destructive/5 border border-destructive/20 rounded-2xl p-8 relative overflow-hidden backdrop-blur-[64px] flex flex-col">
+              <h3 className="text-lg font-bold tracking-tight text-destructive mb-6 uppercase">A Decade of Disasters (2016-2026)</h3>
+              <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
+                Empirical data proves the lethality of reactive policing and visual density estimation.
+              </p>
+              <div className="flex flex-col gap-4">
+                <div className="border-l-2 border-destructive/50 pl-4">
+                  <div className="text-xs text-destructive font-mono font-bold mb-1">June 4, 2025 • Bengaluru</div>
+                  <div className="text-sm font-semibold mb-1">RCB Victory Parade</div>
+                  <div className="text-xs text-muted-foreground">11 Dead, 56 Injured</div>
+                </div>
+                <div className="border-l-2 border-destructive/30 pl-4">
+                  <div className="text-xs text-destructive/70 font-mono font-bold mb-1">Sept 22, 2022 • Hyderabad</div>
+                  <div className="text-sm font-semibold mb-1">Gymkhana Ticket Surge</div>
+                  <div className="text-xs text-muted-foreground">20+ Injured</div>
+                </div>
+                <div className="border-l-2 border-destructive/30 pl-4">
+                  <div className="text-xs text-destructive/70 font-mono font-bold mb-1">March 19, 2022 • Kerala</div>
+                  <div className="text-sm font-semibold mb-1">Poongod Stadium Collapse</div>
+                  <div className="text-xs text-muted-foreground">200+ Injured</div>
+                </div>
+                <div className="border-l-2 border-destructive/30 pl-4">
+                  <div className="text-xs text-destructive/70 font-mono font-bold mb-1">March 22, 2021 • Telangana</div>
+                  <div className="text-sm font-semibold mb-1">Police Grounds Gallery</div>
+                  <div className="text-xs text-muted-foreground">80+ Injured</div>
+                </div>
+              </div>
+            </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <StatCard icon={<Activity className="w-5 h-5" />} label="Density Accuracy" value="95%" />
-            <StatCard icon={<Zap className="w-5 h-5" />} label="AI Response Time" value="< 15s" />
-            <StatCard icon={<ShieldCheck className="w-5 h-5" />} label="Verified" value="Zero-Trust" />
-            <StatCard icon={<Users className="w-5 h-5" />} label="Scalability" value="60k+ Nodes" />
+            {/* Column 2: Physics of a Crush */}
+            <div className="bg-background/40 border border-border/50 rounded-2xl p-8 relative overflow-hidden backdrop-blur-[64px] flex flex-col">
+              <h3 className="text-lg font-bold tracking-tight text-foreground mb-6 uppercase">The Physics of a Crush</h3>
+              <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
+                Crushes are governed by exact mathematical thresholds of fluid dynamics, not random panic.
+              </p>
+              
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Safe Capacity</span>
+                    <span className="text-sm font-bold text-[oklch(0.65_0.15_150)]">1-2 / m²</span>
+                  </div>
+                  <div className="w-full bg-secondary/50 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-[oklch(0.65_0.15_150)] h-full w-[25%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Critical Restriction</span>
+                    <span className="text-sm font-bold text-orange-500">4-5 / m²</span>
+                  </div>
+                  <div className="w-full bg-secondary/50 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-orange-500 h-full w-[75%]"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Lethal Fluid Mass</span>
+                    <span className="text-sm font-bold text-destructive">&gt; 6 / m²</span>
+                  </div>
+                  <div className="w-full bg-secondary/50 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-destructive h-full w-[100%] animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 bg-black/20 rounded-xl p-4 border border-white/5">
+                <div className="text-xs text-muted-foreground mb-2">Mechanism of Death</div>
+                <div className="font-mono text-sm text-foreground">Compressive Asphyxia</div>
+                <div className="text-[10px] text-muted-foreground mt-2 uppercase tracking-widest leading-relaxed">
+                  Loss of physical autonomy causes kinetic shockwaves exceeding <span className="text-destructive font-bold">4,000 Newtons</span> of multi-directional force.
+                </div>
+              </div>
+            </div>
+
+            {/* Column 3: The Aegis Prevention */}
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 relative overflow-hidden backdrop-blur-[64px] flex flex-col">
+              <h3 className="text-lg font-bold tracking-tight text-primary mb-6 uppercase">How Aegis Prevents It</h3>
+              <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
+                Replacing manual estimation and VHF radio silos with zero-trust algorithmic preemption.
+              </p>
+
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+                    <Activity className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground mb-1">Algorithmic Preemption</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      CSRNet + 3D LiDAR identifies invisible density chokepoints 5-12 minutes before they form.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+                    <Users className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground mb-1">The Vanguard Protocol</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Dynamic "Trend Alerts" automatically push gamified rerouting bounties to fan devices before density hits 4.5 / m².
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+                    <ShieldCheck className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground mb-1">Maker-Checker Triage</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Voice PTT triggers instant digital lock-downs, bypassing bureaucratic communication latency entirely.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </motion.div>
 
